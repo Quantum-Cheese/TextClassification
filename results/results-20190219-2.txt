@@ -1,0 +1,4 @@
+Using Linear SVM classifier......result:
+running time:0:49:12.194226
+accuracy: 0.9675  precision: 0.9765421372719374  recall: 0.9672977624784854   f1_score: 0.9718979680069175
+
