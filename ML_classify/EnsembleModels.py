@@ -11,8 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 
 # 定义输入数据（特征和标签）文件名
-features_filaname="datas/features_0516.csv"
-targets_filanme="datas/targets_0516.csv"
+features_filaname="datas/features。csv"
+targets_filanme="datas/targets.csv"
 
 
 def data_split():

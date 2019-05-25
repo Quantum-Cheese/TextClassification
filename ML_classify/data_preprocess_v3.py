@@ -8,14 +8,14 @@ from gensim.models.keyedvectors import KeyedVectors
 from sklearn.feature_extraction.text import TfidfVectorizer
 from dataObj import DataObj
 import jieba
-jieba.load_userdict('datas/myDict.txt')
+jieba.load_userdict('')
 import jieba.analyse
 import jieba.posseg as pseg
 
-rawDatas_filename="datas/raw_datas_0430.csv"
-features_filename="datas/features_0516.csv"
-targets_filename="datas/targets_0516.csv"
-w2v_filename="datas/word2vec/vector_word_cnn.txt"
+rawDatas_filename=""
+features_filename=""
+targets_filename=""
+w2v_filename=""
 
 
 def jieba_process(text):
@@ -107,7 +107,7 @@ def document_vectorization(f_rawDatas,f_features,f_targets,tag=True):
     word2weight = defaultdict(lambda: max_idf, [(w, tfidf.idf_[i]) for w, i in tfidf.vocabulary_.items()])
     # 保存词权重到本地文件
     df = pd.DataFrame({"weight": word2weight})
-    df.to_csv('datas/word_weight_0516.csv')
+    df.to_csv('')
 
     """文档向量转换"""
     startTime = arrow.now()
@@ -137,23 +137,13 @@ def document_vectorization(f_rawDatas,f_features,f_targets,tag=True):
 if __name__ == "__main__":
     start_time = arrow.now()
 
-    url = "192.168.20.149"
-    username = "root"
-    password = "admin123!@#"
-    db = "text_classification_samples"
+    url = ""
+    username = ""
+    password = ""
+    db = ""
     dataObj = DataObj(url, username, password, db)
 
-    # 设定取样数量
-    # pos_samples, ratio = dataObj.get_positive_num(), 1
-    # sql = "(SELECT title,content,information_type FROM samples_for_analysis where information_type=1) union all " \
-    #       "(SELECT title,content,information_type FROM samples_for_analysis where information_type=0 order by rand() limit " \
-    # + str(pos_samples * ratio) + ")"
-    # print("Sample numbers:{}".format(pos_samples * (1 + ratio)))
-
-    sql = "(SELECT title,content,information_type FROM samples_for_analysis where information_type=1 limit 500)  union all " \
-          "(SELECT title,content,information_type FROM samples_for_analysis where information_type=0  limit 500)"
-    #print("Sample number:1000")
-
+    sql = ""
 
     """读取数据，存csv"""
     #dataObj.save_csv(sql, rawDatas_filename)

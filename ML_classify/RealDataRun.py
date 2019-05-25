@@ -21,11 +21,11 @@ def pre_process(text):
     startTime=arrow.now()
 
     #读取词权重词典
-    word_weight_1 = pd.read_csv('datas/word_weight_0515.csv')
+    word_weight_1 = pd.read_csv('')
     word_weight_1.columns = ['word', 'weight']
 
     # 读取word2vec模型
-    model = word2vec.Word2Vec.load('datas/word2vec/w2v_3.model')
+    model = word2vec.Word2Vec.load('')
     #model = KeyedVectors.load_word2vec_format("datas/word2vec/vector_word_cnn.txt")  # 从词向量文件加载word2vec
     # 从word2vec模型构造词向量
     w2v = dict(zip(model.wv.index2word, model.wv.syn0))
@@ -50,8 +50,7 @@ def predict(model_name,raw_data):
 
     # 加载模型
     model = joblib.load(model_name)
-    conn = pymysql.connect(host="192.168.20.149", user="root", passwd="admin123!@#", db="text_classification_samples",
-                           charset='utf8')
+    conn = pymysql.connect(host="", user="", passwd="", db="",charset='utf8')
     curs = conn.cursor()
 
     for n in range(raw_data.shape[0]):
@@ -69,7 +68,7 @@ def predict(model_name,raw_data):
             prediction = model.predict([text_vector])  # 否则，输入文档向量，用模型预测
         try:
             # 预测结果保存到数据表 qh_testResults_1
-            sql = "insert into qh_testResults_2 (id,text,tag) values (%s,'%s',%s)"
+            sql = "insert into xxxx (id,text,tag) values (%s,'%s',%s)"
             curs.execute(sql % (int(data['org_id']), pymysql.escape_string(data['text']), int(prediction[0])))
             conn.commit()
         except Exception as e:
@@ -84,16 +83,16 @@ def predict(model_name,raw_data):
 """从数据库读取批量数据并预测，控制每次取得的数据条数"""
 def iter_run(model_name,batch_size):
     # 读取数据
-    url = "192.168.20.149"
-    username = "root"
-    password = "admin123!@#"
-    db = "text_classification_samples"
+    url = "1"
+    username = ""
+    password = ""
+    db = ""
     data_obj = DataObj(url, username, password, db)
 
-    last_id=2019030478831
+    last_id=1100
     while True:
         startTime=arrow.now()
-        sql = "select org_id,title,content from real_data_test where crawler_time < '2019-03-21 00:00:00'" \
+        sql = "select org_id,title,content from xxx where time < '2019-03-21 00:00:00'" \
             + "and org_id> "+ str(last_id) +" limit "+str(batch_size)
         last_id+=batch_size
         raw_datas = data_obj.data_read(sql)
@@ -119,7 +118,7 @@ def iter_run(model_name,batch_size):
 
 if __name__=="__main__":
 
-    iter_run("pkls/GBDT_0515.pkl",10)
+    iter_run("",10)
 
 
 

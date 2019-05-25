@@ -10,15 +10,15 @@ class DataObj():
         self.username=username
         self.password=password
         self.dbname=dbname
-        self.rawData_filename="datas/raw_data_withTag.txt"
-        self.targets_filename="datas/targets.csv"
+        self.rawData_filename=""
+        self.targets_filename=""
         self.sql=""
 
     """获取样本表中正例样本数量"""
     def get_positive_num(self):
         conn = pymysql.connect(host=self.url, user=self.username, passwd=self.password, db=self.dbname, charset='utf8')
         curs = conn.cursor()
-        sql="select count(id) from samples_for_analysis where information_type=1"
+        sql="select count(id) from xxx where tag=1"
         curs.execute(sql)
         result=curs.fetchall()
         return result[0][0]
@@ -30,8 +30,7 @@ class DataObj():
         :param ratio:  负例/正例 比例（必须是整数）
         """
         # 负例随机选取
-        sql="(SELECT title,content,information_type FROM samples_for_analysis where information_type=1 limit "+str(positive_num)+") " \
-              "union all (SELECT title,content,information_type FROM samples_for_analysis where information_type=0 order by rand() limit " \
+        sql="" \
               +str(positive_num*ratio)+")"
 
         self.sql=sql
@@ -56,7 +55,7 @@ class DataObj():
     def save_txt(self,sql):
         startTime=arrow.now()
         result=self.data_read(sql)
-        f = open("datas/raw_data_withTag.txt", "a", encoding="utf-8")
+        f = open("", "a", encoding="utf-8")
         targets = []
         ## 数据存入硬盘，文本内容写入txt文件，标签存为csv
         for content in result:
@@ -94,18 +93,16 @@ class DataObj():
 
 if __name__ == "__main__":
 
-    url = "192.168.20.149"
-    username = "root"
-    password = "admin123!@#"
-    db = "text_classification_samples"
+    url = ""
+    username = ""
+    password = ""
+    db = ""
     data=DataObj(url,username,password,db)
 
     positive_num,ratio=10,2
-    sql="(SELECT title,content,information_type FROM samples_for_analysis where information_type=1 limit "+str(positive_num)+") " \
-              "union all (SELECT title,content,information_type FROM samples_for_analysis where information_type=0 order by rand() limit " \
-              +str(positive_num*ratio)+")"
+    sql=""
 
-    data.save_csv(sql,"raw_datas.csv")
+    data.save_csv(sql,"")
 
 
 
