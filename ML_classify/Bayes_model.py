@@ -8,24 +8,28 @@ import pandas as pd
 
 def run_model():
     startTime = arrow.now()
-    print("start at {}".format(startTime))
 
-    features = pd.read_csv("features.csv", header=None).values
-    targets = pd.read_csv("targets.csv", header=None).values.ravel()
+    print("start at {}\n".format(startTime))
+
+    features = pd.read_csv("feature_engineer/datas/features.csv", header=None).values
+    targets = pd.read_csv("feature_engineer/datas/targets.csv", header=None).values.ravel()
+
+    sample_number=len(targets)
+    print("sample number:{}".format(sample_number))
 
     X_train, X_test, y_train, y_test=train_test_split(features,targets,test_size=0.2,random_state=35)
     print("data split finised!")
-
 
     """模型预测"""
     clf = GaussianNB()
     clf.fit(X_train, y_train)
     print("model training completed!!")
     # 保存模型
-    joblib.dump(clf, 'model_nbyes.pkl')
-    # 加载模型
-    # joblib.load()
-    print("model saved!")
+    cTime = arrow.now()
+    filename = 'pkls/lsvc_' + cTime.format('YYYY-MM-DD') + ' ' + str(cTime.hour) + '-' + str(
+        cTime.minute) + '.pkl'  # 记录生成文件的时间
+    joblib.dump(clf, filename)
+
     y_pred = clf.predict(X_test)
 
     """效果评估"""
@@ -39,21 +43,29 @@ def run_model():
     endTime = arrow.now()
     run_time = endTime - startTime
 
-    return metrics_scores, run_time
+    return metrics_scores, run_time,sample_number
 
-# 加载特征工程处理好的数据，运行模型预测
-scores,runTime=run_model()
-print(scores)
-print(runTime)
-print("program finished!!")
 
-"""输出模型评估结果（导出文件）"""
-f=open("results.txt","a")
-f.write("Using Naive Bayes classifier......result:\n")
-f.write("running time:{}\n".format(runTime))
-f.write("accuracy: {}  precision: {}  recall: {}   f1_score: {}"
-        .format(scores["acc"],scores["pre"],scores["recall"],scores["f1"]))
-f.write("\n\n")
+if __name__ == "__main__":
+    # 加载特征工程处理好的数据，运行模型预测
+    scores, runTime,sample_number = run_model()
+    print(scores)
+    print(runTime)
+    print("program finished!!")
+
+    """输出模型评估结果（导出文件）"""
+    cTime = arrow.now()
+    filename="results "+ cTime.format('YYYY-MM-DD') + ' ' + str(cTime.hour) + '-' + str(
+        cTime.minute) +".txt"
+    f = open(filename, "a")
+    f.write("Training Naive Bayes classifier with {} samples.\n Result:\n".format(sample_number))
+    f.write("running time:{}\n".format(runTime))
+    f.write("accuracy: {}  precision: {}  recall: {}   f1_score: {}"
+            .format(scores["acc"], scores["pre"], scores["recall"], scores["f1"]))
+    f.write("\n\n")
+
+
+
 
 
 

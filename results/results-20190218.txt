@@ -1,4 +1,0 @@
-Using Naive Bayes classifier......result:
-running time:0:48:45.687987
-accuracy: 0.8655  precision: 0.8524072612470402  recall: 0.9294320137693631   f1_score: 0.8892548373816385
-
